@@ -2,10 +2,12 @@ package com.semutong.webhook.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,15 +25,33 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-public class ApiMessageToSlack {
+public class ApiMessageController {
     private final ObjectMapper objectMapper;
     @Value("${slack.url}")
     private String TO_SLACK_URL;
 
     @Data
     public static class ExceptionMessage {
+        @ApiModelProperty(
+                value = "에러 본문 내용을 입력하는 필드",
+                name = "",
+                dataType = "",
+                example = ""
+        )
         private String content;
+        @ApiModelProperty(
+                value = "에러 요약 내용을 입력하는 필드",
+                name = "",
+                dataType = "",
+                example = ""
+        )
         private String title;
+        @ApiModelProperty(
+                value = "해당 에러를 전송한 직원의 이름",
+                name = "",
+                dataType = "",
+                example = ""
+        )
         @JsonProperty("sender")
         private String username;
     }
@@ -44,7 +64,15 @@ public class ApiMessageToSlack {
         fincube;
     }
 
-
+    @ApiOperation(value = "slack으로 error를 전송하는 api",
+            notes = "" )
+    @ApiImplicitParam(
+            name = "project"
+            , value = "에러가 발생한 프로젝트를 입력하는 필드"
+            , required = true
+            , dataType = "string"
+            , paramType = "path"
+            , defaultValue = "none")
     @PostMapping("/api/webhook/exception/{project}")
     public ResponseEntity<HttpStatus> sendMessage(@RequestBody ExceptionMessage request,
                                                   @PathVariable("project") ProjectEnum project) throws Exception {
