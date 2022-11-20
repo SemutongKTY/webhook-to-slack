@@ -1,8 +1,8 @@
 spring:
   profiles:
     group:
-      "local" : "common-env, local-env"
-      "dev" : "common-env, dev-env"
+      "local" : "common-env, local-env, swagger"
+      "dev" : "common-env, dev-env, swagger"
       "prod" : "common-env, prod-env"
     active: ${profile}
 ---
@@ -10,6 +10,18 @@ spring:
   config:
     activate:
       on-profile: "common-env"
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+      accept-empty-array-as-null-object: true
+    date-format: yyyy-MM-dd'T'HH:mm:ssZ
+    time-zone: Asia/Seoul
 
 server:
   port: 8080
