@@ -1,5 +1,44 @@
+spring:
+  profiles:
+    group:
+      "local" : "common-env, local-env"
+      "dev" : "common-env, dev-env"
+      "prod" : "common-env, prod-env"
+    active: ${profile}
+---
+spring:
+  config:
+    activate:
+      on-profile: "common-env"
+
 server:
   port: 8080
 
 slack:
   url: https://hooks.slack.com/services/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
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod-env"
+
+server-setting-values:
+  is-production: true
+  enable-scheduler: false
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev-env"
+
+server-setting-values:
+  is-production: false
+  enable-scheduler: false
+---
+spring:
+  config:
+    activate:
+      on-profile: "local-env"
+server-setting-values:
+  is-production: false
+  enable-scheduler: false
