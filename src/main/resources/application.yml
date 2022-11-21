@@ -27,7 +27,7 @@ server:
   port: 8080
 
 slack:
-  url: https://hooks.slack.com/services/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
+  url: https://hooks.slack.com/services/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
 ---
 spring:
   config:
